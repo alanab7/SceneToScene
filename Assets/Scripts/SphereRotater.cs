@@ -6,7 +6,6 @@ public class SphereRotater : MonoBehaviour
 
     void Update()
     {
-        // Rotate using the defined speeds scaled by time
         transform.Rotate(rotationSpeeds * Time.deltaTime);
     }
 }
