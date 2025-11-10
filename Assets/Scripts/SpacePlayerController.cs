@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class SpacePlayerController : MonoBehaviour
 {
- public InputAction MoveAction;
+    public InputAction MoveAction;
+ private static SpacePlayerController instance;
+
 
     public float walkSpeed = 1.0f;
     public float turnSpeed = 20f;
@@ -37,15 +40,40 @@ public class SpacePlayerController : MonoBehaviour
         m_Rigidbody.MoveRotation(m_Rotation);
         m_Rigidbody.MovePosition(m_Rigidbody.position + m_Movement * walkSpeed * Time.deltaTime);
     }
-    
-    void OnTriggerEnter(Collider other) 
+
+    void OnTriggerEnter(Collider other)
     {
- // Check if the object the player collided with has the "PickUp" tag.
- if (other.gameObject.CompareTag("PickUp")) 
+        // Check if the object the player collided with has the "PickUp" tag.
+        if (other.gameObject.CompareTag("PickUp"))
         {
- // Deactivate the collided object (making it disappear).
+            // Deactivate the collided object (making it disappear).
             other.gameObject.SetActive(false);
         }
+
+        if (other.gameObject.CompareTag("Scene1Door"))
+        {
+            // Print out the current scene's name
+
+            Debug.Log(SceneManager.GetActiveScene().name);
+
+            // Change scene
+
+            SceneManager.LoadScene("Scene2");
+            //transform.localScale = new Vector3(2f, 2f, 2f);
+            walkSpeed = 6.0f;
+        }
     }
+    
+    void Awake()
+    {
+         if (instance != null && instance != this)
+        {
+        Destroy(gameObject); // prevent duplicates
+        return;
+        }
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
 }
 
