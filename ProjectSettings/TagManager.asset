@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PickUp
   - Scene1Door
+  - Scene2Door
   layers:
   - Default
   - TransparentFX
