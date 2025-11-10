@@ -2,14 +2,24 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-   public Transform target; // Assign your character's Transform in the Inspector
+   public Transform Player; // Assign your character's Transform in the Inspector
         public Vector3 offset; // Adjust the desired offset from the character
 
-        void LateUpdate()
+
+    void Awake()
+    {
+        offset = transform.position - Player.position;
+    }
+
+    void LateUpdate()
+    {
+        if (Player != null)
         {
-            if (target != null)
-            {
-                transform.position = target.position + offset;
-            }
+            // Position the camera behind the player, maintaining the offset
+            transform.position = Player.position + Player.rotation * offset;
+
+            // Make the camera look at the player
+            transform.LookAt(Player.position);
         }
+    }
 }
