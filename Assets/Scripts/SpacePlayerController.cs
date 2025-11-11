@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -7,19 +8,22 @@ using UnityEngine.SceneManagement;
 
 public class SpacePlayerController : MonoBehaviour
 {
-    public InputAction MoveAction;
+ public InputAction MoveAction;
  private static SpacePlayerController instance;
 
 
     public float walkSpeed = 1.0f;
     public float turnSpeed = 20f;
+    private int count;
 
     Rigidbody m_Rigidbody;
     Vector3 m_Movement;
     Quaternion m_Rotation = Quaternion.identity;
+    private MeshRenderer meshRenderer;
 
     void Start ()
     {
+        count = 0;
         m_Rigidbody = GetComponent<Rigidbody> ();
         MoveAction.Enable();
     }
@@ -30,6 +34,7 @@ public class SpacePlayerController : MonoBehaviour
 
         float horizontal = pos.x;
         float vertical = pos.y;
+        
 
         m_Movement.Set(horizontal, 0f, vertical);
         m_Movement.Normalize();
@@ -39,6 +44,7 @@ public class SpacePlayerController : MonoBehaviour
 
         m_Rigidbody.MoveRotation(m_Rotation);
         m_Rigidbody.MovePosition(m_Rigidbody.position + m_Movement * walkSpeed * Time.deltaTime);
+        
     }
 
     void OnTriggerEnter(Collider other)
@@ -48,6 +54,7 @@ public class SpacePlayerController : MonoBehaviour
         {
             // Deactivate the collided object (making it disappear).
             other.gameObject.SetActive(false);
+            count = count + 1;
         }
 
         if (other.gameObject.CompareTag("Scene1Door"))
@@ -63,17 +70,19 @@ public class SpacePlayerController : MonoBehaviour
             walkSpeed = 6.0f;
         }
     }
-    
+
     void Awake()
     {
-         if (instance != null && instance != this)
+        if (instance != null && instance != this)
         {
-        Destroy(gameObject); // prevent duplicates
-        return;
+            Destroy(gameObject); // prevent duplicates
+            return;
         }
         instance = this;
         DontDestroyOnLoad(gameObject);
     }
+    
+    
 
 }
 
