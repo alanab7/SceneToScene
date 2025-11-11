@@ -69,6 +69,16 @@ public class SpacePlayerController : MonoBehaviour
             transform.position = new Vector3(0f, 1f, 0f);
             walkSpeed = 6.0f;
         }
+//uncomment when scene 3 is done, adjust position and walk speed as needed
+        //if (other.gameObject.CompareTag("Scene2Door"))
+        //{
+
+           // Debug.Log(SceneManager.GetActiveScene().name);
+
+           // SceneManager.LoadScene("Scene3");
+            //transform.position = new Vector3(0f, 1f, 0f);
+            //walkSpeed = 6.0f;
+       // }
     }
 
     void Awake()
